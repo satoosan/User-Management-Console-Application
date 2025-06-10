@@ -96,7 +96,3 @@ src/
 * Possui construtores e getters/setters para manipulação dos dados.
 
 ---
-
-Se precisar, posso ajudar a gerar exemplos de compilação, execução ou até um script para facilitar.
-
-Quer que eu crie também?
