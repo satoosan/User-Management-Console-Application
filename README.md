@@ -1,98 +1,132 @@
-Claro! Aqui está uma documentação para o seu projeto em formato README, objetiva mas completa, explicando o funcionamento, requisitos, uso e estrutura do código.
+# 🧑‍💻 User Management GUI Application (Java + CSV)
+
+Aplicação desktop simples em Java (GUI) para cadastro, listagem e remoção de usuários, com persistência de dados em arquivo `.csv`.
 
 ---
 
-# User Management Console Application
+## 📋 Sumário
 
-Aplicação Java simples para cadastro e listagem de usuários via console, validando idade e data de nascimento.
-
----
-
-## Sumário
-
-* [Descrição](#descrição)
-* [Funcionalidades](#funcionalidades)
-* [Requisitos](#requisitos)
-* [Como usar](#como-usar)
-* [Estrutura do Projeto](#estrutura-do-projeto)
-* [Detalhes da Implementação](#detalhes-da-implementação)
+* [📖 Descrição](#📖-descrição)
+* [🚀 Funcionalidades](#🚀-funcionalidades)
+* [🛠 Requisitos](#🛠-requisitos)
+* [▶️ Como usar](#▶️-como-usar)
+* [📁 Estrutura do Projeto](#📁-estrutura-do-projeto)
+* [🧩 Detalhes da Implementação](#🧩-detalhes-da-implementação)
 
 ---
 
-## Descrição
+## 📖 Descrição
 
-Aplicação console que permite o cadastro de usuários, armazenando nome, idade e data de nascimento. Durante o cadastro, valida se a idade informada bate com a data de nascimento. Usuários cadastrados podem ser listados no console.
-
----
-
-## Funcionalidades
-
-* Cadastrar usuário com:
-
-  * Nome
-  * Idade (informada pelo usuário)
-  * Data de nascimento (formato dd/MM/yyyy)
-* Validação da consistência entre idade e data de nascimento.
-* Listar todos os usuários cadastrados com suas informações.
-* Opção para sair do programa.
+Aplicação Java com interface gráfica baseada em `JOptionPane`, que permite cadastrar usuários com nome, idade e data de nascimento. Os dados são salvos em um arquivo `.csv`, e a aplicação valida se a idade informada bate com a data de nascimento. Também é possível visualizar os usuários via console ou Excel, e remover registros.
 
 ---
 
-## Requisitos
+## 🚀 Funcionalidades
+
+✅ Cadastrar usuário:
+
+* Nome
+* Idade
+* Data de nascimento (formato `dd/MM/yyyy`)
+* Verificação automática da coerência entre idade e data de nascimento
+
+✅ Listar usuários:
+
+* Em janela de texto formatada
+* Ou abrir diretamente no Excel (arquivo CSV)
+
+✅ Remover usuário:
+
+* Escolha interativa por índice da lista
+
+✅ Salvar e carregar dados de forma persistente em `usuarios.csv`
+
+✅ Arquivo `.csv` permanece acessível mesmo durante o uso
+
+✅ Encerramento com mensagem amigável
+
+---
+
+## 🛠 Requisitos
 
 * Java 8 ou superior
-* Ambiente para compilar e executar programas Java (JDK)
+* IDE como Eclipse, IntelliJ ou terminal com `javac` e `java`
 
 ---
 
-## Como usar
+## ▶️ Como usar
 
-1. Compile as classes `Main` e `User`.
-2. Execute a classe `Main`.
-3. No menu, escolha:
+1. Compile os arquivos:
 
-   * `1` para cadastrar usuário.
-   * `2` para listar usuários cadastrados.
-   * `3` para sair do programa.
-4. Para cadastro, informe nome, idade e data de nascimento.
+   ```bash
+   javac src/Main.java src/util/User.java
+   ```
 
-   * A idade deve ser coerente com a data de nascimento.
-5. Ao listar usuários, são exibidos nome, idade e data de nascimento formatada.
+2. Execute a aplicação:
+
+   ```bash
+   java -cp src Main
+   ```
+
+3. No menu interativo (via `JOptionPane`), escolha:
+
+   * `1` para cadastrar um novo usuário
+   * `2` para listar usuários (console ou Excel)
+   * `3` para remover um usuário existente
+   * `4` para sair do programa
+
+4. Durante o cadastro:
+
+   * Informe nome, idade e data de nascimento.
+   * A aplicação calcula a idade real e compara com a informada.
+   * Caso não coincida, será solicitado o recadastro.
+
+5. O arquivo `usuarios.csv` será criado (ou atualizado) automaticamente no mesmo diretório.
 
 ---
 
-## Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
-src/
- ├── Main.java          # Classe principal com o fluxo do programa
- └── util/
-     └── User.java      # Classe modelo para representar o usuário
+projeto/
+ ├── usuarios.csv               # Arquivo de persistência de dados (gerado automaticamente)
+ ├── src/
+ │   ├── Main.java              # Classe principal com lógica e menus
+ │   └── util/
+ │       └── User.java          # Classe modelo de usuário
 ```
 
 ---
 
-## Detalhes da Implementação
+## 🧩 Detalhes da Implementação
 
-### Main.java
+### 🧠 Main.java
 
-* Controla o fluxo principal do programa.
-* Utiliza `Scanner` para entrada via console.
-* Mantém uma lista em memória (`List<User>`) dos usuários cadastrados.
-* Formata e valida a data de nascimento usando `DateTimeFormatter` e `LocalDate`.
-* Calcula idade real a partir da data de nascimento para validar contra a idade informada.
-* Permite repetição do cadastro caso os dados não estejam corretos.
-* Exibe os dados formatados ao listar usuários.
-* Fecha o scanner ao sair.
+* Utiliza `JOptionPane` para interação com o usuário (interface gráfica simples)
+* Armazena usuários em memória usando `List<User>`
+* Usa `DateTimeFormatter` e `LocalDate` para validação da idade
+* Lista usuários com formatação ou via planilha
+* Abre o `.csv` diretamente no Excel (caso disponível via `Desktop.getDesktop()`)
+* Arquivo `usuarios.csv` é atualizado de forma segura:
 
-### User.java
+  * Primeiro grava em um arquivo temporário
+  * Depois substitui o original
+  * Permite edição manual do `.csv` durante o uso
 
-* Classe modelo para usuário.
+### 👤 User.java
+
 * Atributos:
 
-  * `name` (String): nome do usuário.
-  * `idade` (Integer): idade do usuário.
-  * `dataDeNascimento` (Date): data de nascimento.
-* Possui construtores e getters/setters para manipulação dos dados.
+  * `String name`
+  * `int idade`
+  * `Date dataDeNascimento`
+* Getters, setters e construtor completo
+* Usado como modelo de dados no programa
 
 ---
+
+## 💡 Observações
+
+* Caso a idade digitada não corresponda à data de nascimento, o cadastro é recusado com aviso.
+* O `.csv` é salvo mesmo que esteja aberto no Excel ou outro editor.
+* Ao sair (opção `4`), uma mensagem final é exibida antes do encerramento automático com `System.exit(0)`.
